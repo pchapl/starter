@@ -2,8 +2,12 @@
 
 use App\Kernel;
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+$_SERVER['APP_RUNTIME_OPTIONS'] ??= [];
+$_SERVER['APP_RUNTIME_OPTIONS']['dotenv_path'] = '/env/.env';
 
-return function (array $context) {
-    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
-};
+require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
+
+return static fn (array $context) => new Kernel(
+    $context['APP_ENV'],
+    (bool)$context['APP_DEBUG'],
+);
